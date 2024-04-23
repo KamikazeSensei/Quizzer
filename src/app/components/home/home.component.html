@@ -1,0 +1,81 @@
+<section class="vh-100 d-flex">
+   <div class="my-auto mx-auto">
+      <div class="my-container">
+
+         <!-- Main Div -->
+
+         <div class="main p-5 rounded-4" *ngIf="step1" [@bounceInDownOnEnter] [@bounceOutLeftOnLeave]>
+            <h1>Welcome to Quizzer</h1>
+
+            
+            <mat-form-field class="w-100 rounded-2 py-2">
+               <mat-label>Choose a Category</mat-label>
+               <mat-select name="categories" id="categories" [(ngModel)]="selectedCategory" placeholder="Choose a Category">
+               <mat-option value="">Any Category</mat-option>
+               <mat-option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</mat-option>
+
+               </mat-select>
+             </mat-form-field>
+
+
+         <mat-form-field class="w-100 rounded-2 py-2">
+            <mat-label>Choose Difficulty</mat-label>
+            <mat-select name="difficulty" id="difficulty" class="rounded-2 p-2 w-100" [(ngModel)]="selectedDifficulty">
+
+               <mat-option value="easy">Easy</mat-option>
+               <mat-option value="medium">Moderate</mat-option>
+               <mat-option value="hard">Hard</mat-option>
+
+         </mat-select>
+         </mat-form-field>
+            
+           
+
+            <h4 class="my-3">Choose Number of Questions</h4>
+            <input type="number" name="number" id="number" class="form-control" [(ngModel)]="selectedNum" min="1" max="10" placeholder="1-10 Questions">
+
+            <div class="mt-4">
+               <button class="main-button" (click)="getQuestions(selectedNum,selectedDifficulty,selectedCategory)">Begin the Quizz!</button>
+
+            </div>
+
+           </div>
+
+           <!-- ################################## -->
+
+           <!-- Questions Card -->
+           <div class="main p-5 rounded-4" *ngIf="step2" [@bounceInRightOnEnter] [@bounceOutLeftOnLeave]>
+
+            <div class="d-flex justify-content-between">
+               <h4>Question #{{index+1}} out of {{newQuestions.length}}</h4>
+               <h6>Category : {{newQuestions[index].category |decode}}</h6>
+            </div>
+
+            <h2 class="text-center my-3" [innerHTML]="newQuestions[index].question |decode"></h2>
+            <div class="d-grid w-100">
+               
+                  <button *ngFor="let answer of newQuestions[index].all_answers" class="btn btn-light w-100 my-3 fs-4 answerButton" [ngClass]="{'disabledBtn': checking}" [innerHTML]="answer| decode" (click)="checkAnswer(answer)"></button>
+              
+            </div>
+            <div>
+               <p>Score : {{score}}/{{newQuestions.length}}</p>
+            </div>
+           </div>
+
+            <!-- ################################## -->
+
+            <!-- Score and try again -->
+
+           <div class="main p-5 rounded-4 text-center" *ngIf="step3" [@bounceInRightOnEnter] [@bounceOutLeftOnLeave]>
+
+            <h2>Your Score</h2>
+
+            <h3 class="my-3">{{score}}/{{newQuestions.length}}</h3>
+
+            <button class="btn btn-success" (click)="reset()">Go Again ?</button>
+           </div>
+      </div>
+     
+   </div>
+  
+</section>
